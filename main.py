@@ -114,7 +114,7 @@ async def barplot(ctx, *args):
             dt[val[0]] = int(val[1])
         df = pd.DataFrame(dt, index=[0])
         sns.barplot(x=df.columns.tolist(), y=df.iloc[0])
-	plt.ylabel("")
+        plt.ylabel("")
         buf = io.BytesIO()
         plt.savefig(buf, format="png")
         plt.clf()
