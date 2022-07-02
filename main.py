@@ -1,4 +1,3 @@
-from braintree import Descriptor
 from discord.ext.commands import Bot
 import discord
 from discord import Embed
@@ -96,7 +95,7 @@ async def barplot(ctx, *args):
     await ctx.send(content=ctx.author.mention, file=image_file)
   except Exception as e:
     print(e)
-    embed = Embed(title=":x: ERROR: An Exception Occured", description="Is the data you entered valid?")
+    embed = Embed(title=":x: ERROR: An Exception Occured", description="Is the data you entered valid?", color=discord.Color.red())
     await ctx.send(content=ctx.author.mention, embed=embed)
 
 @client.event
