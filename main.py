@@ -123,7 +123,7 @@ async def barplot(ctx, *args):
             color=discord.Color.green(),
         )
         await ctx.send(content=ctx.author.mention, embed=embed, file=image_file)
-	del buf
+        del buf
     except Exception as e:
         print(e)
         embed = Embed(
