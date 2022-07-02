@@ -44,12 +44,16 @@ with open("problems.json", "r") as f:
 client = Bot(command_prefix=">")
 client.remove_command("help")
 
+supported_commands = [">help", ">stacksearch", ">algorithm", ">barplot"]
+
 @client.command()
 async def help(ctx):
+
   embed = Embed(title="spartaKus - BETA", description="A Discord bot made to assist programmers. Creator of the bot: https://prmethus.github.io")
   embed.add_field(name=">help", value="Show the supported commands and bot info.")
   embed.add_field(name=">stacksearch", value="Get solution to your problem from StachOverflow. Uses Google Custom Search API. \nExample: >stacksearch OSError Python")
   embed.add_field(name=">algorithm", value="Uses Codeforces API to get Algorithmtic questions. Example: >algorithm medium\nSupported Difficulties: [easy, medium, hard]")
+  embed.add_field(name=">barplot", value="Creates a Bar Plot NOTE: THE y VALUES MUST BE NUMERIC. Example: >barplot Hello=123 World=150")
   await ctx.send(content=ctx.author.mention, embed=embed)
 
 @client.command()
@@ -89,7 +93,7 @@ async def barplot(ctx, *args):
   except Exception as e:
     print(e)
     await ctx.send("ERROR: An exception occured.\nIs the data you entered valid?")
-    
+
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, CommandNotFound):
