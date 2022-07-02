@@ -73,21 +73,23 @@ async def stacksearch(ctx, *args):
 
 @client.command()
 async def barplot(ctx, *args):
-
+  try:
     dt = {}
     for arg in args:
         val = arg.split("=")
-        dt[val[0]] = dt[val[1]]
-    df = pd.DataFrame(dt)
-    ax = sns.barplot(x=df.columns.tolist(), y=df.iloc[0])
-    ax.bar_label(ax.containers[0])
+        dt[val[0]] = int(val[1])
+    df = pd.DataFrame(dt, index=[0])
+    sns.barplot(x=df.columns.tolist(), y=df.iloc[0])
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
     buf.seek(0)
     image_file = discord.File(fp=buf, filename="barplot.png")
     print(df)
     await ctx.send(content=ctx.author.mention, file=image_file)
-  
+  except Exception as e:
+    print(e)
+    await ctx.send("ERROR: An exception occured.\nIs the data you entered valid?")
+    
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, CommandNotFound):
