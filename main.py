@@ -58,6 +58,9 @@ async def help(ctx):
 
 @client.command()
 async def algorithm(ctx, difficulty="easy"):
+
+  difficulties = ["easy", "medium", "hard"]
+
   difficulty = difficulty.strip().lower()
 
   if not difficulty in difficulties:
