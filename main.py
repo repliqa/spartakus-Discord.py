@@ -116,6 +116,7 @@ async def barplot(ctx, *args):
         sns.barplot(x=df.columns.tolist(), y=df.iloc[0])
         buf = io.BytesIO()
         plt.savefig(buf, format="png")
+        plt.clf()
         buf.seek(0)
         image_file = discord.File(fp=buf, filename="barplot.png")
         embed = Embed(
@@ -123,8 +124,8 @@ async def barplot(ctx, *args):
             color=discord.Color.green(),
         )
         await ctx.send(content=ctx.author.mention, embed=embed, file=image_file)
-        del buf
-    except Exception as e:
+    
+     except Exception as e:
         print(e)
         embed = Embed(
             title=":x: STATUS CODE: Error",
