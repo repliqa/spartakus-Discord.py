@@ -3,7 +3,6 @@ import discord
 from discord import Embed
 import random, os, json
 from discord.ext.commands import CommandNotFound
-from server import keep_alive
 from googleapiclient.discovery import build
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -101,5 +100,4 @@ async def on_command_error(ctx, error):
 async def on_ready():
   await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='>help'))
 
-keep_alive()
 client.run(json_data["TOKEN"])
