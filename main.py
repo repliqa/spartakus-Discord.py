@@ -23,13 +23,16 @@ def getstacksearchresults(query):
   resource = build("customsearch", "v1", developerKey=os.environ["api_key"]).cse()
   out = resource.list(q=query, cx=os.environ['cse_key']).execute()
   items = out['items']
-  embed = Embed(title=f"Results for \"{query}\"")
-  for i in range(4):
-    try:
-      embed.add_field(name=items[i]['title'], value=items[i]['link'])
-    except Exception:
-      pass
-  return embed
+  if len(items) > 1:
+    embed = Embed(title=f"Results for \"{query}\"", color=discord.color.green())
+    for i in range(4):
+      try:
+        embed.add_field(name=items[i]['title'], value=items[i]['link'])
+      except Exception:
+        pass
+    return embed
+  else:
+    return Embed(title=":warning: STATUS CODE: Warning", description="No results found", color=discord.Color.yellow())
 
 def get_problem(problems):
   randint = random.randint(0, len(problems))
