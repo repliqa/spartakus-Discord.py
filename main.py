@@ -10,6 +10,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import uuid
 
+with open("config.json", "r") as f:
+    json_data = json.load(f)
+
 sns.set_style("whitegrid")
 sns.set_palette("mako")
 
@@ -17,8 +20,8 @@ if not os.path.exists("Images"):
   os.mkdir("Images")
   
 def getstacksearchresults(query):
-  resource = build("customsearch", "v1", developerKey=os.environ["api_key"]).cse()
-  out = resource.list(q=query, cx=os.environ['cse_key']).execute()
+  resource = build("customsearch", "v1", developerKey=json_data["api_key"]).cse()
+  out = resource.list(q=query, cx=json_data['cse_key']).execute()
   items = out['items']
   embed = Embed(title=f"Results for \"{query}\"")
   for i in range(4):
@@ -99,4 +102,4 @@ async def on_ready():
   await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='>help'))
 
 keep_alive()
-client.run(os.environ["TOKEN"])
+client.run(json_data["TOKEN"])
