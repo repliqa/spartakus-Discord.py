@@ -96,7 +96,7 @@ async def barplot(ctx, *args):
     await ctx.send(content=ctx.author.mention, file=image_file)
   except Exception as e:
     print(e)
-    embed = Embed(title=":x: ERROR: An Exception Occured", description="Is the data you entered valid?", color=discord.Color.red())
+    embed = Embed(title=":x: ERROR: An Exception Occured", description="Is the data you entered valid?")
     await ctx.send(content=ctx.author.mention, embed=embed)
 
 @client.event
