@@ -7,10 +7,9 @@ from googleapiclient.discovery import build
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import uuid
-
-with open("config.json", "r") as f:
-    json_data = json.load(f)
+import uuid, io
+from dotenv import load_dotenv
+load_dotenv
 
 sns.set_style("whitegrid")
 sns.set_palette("mako")
@@ -19,8 +18,8 @@ if not os.path.exists("Images"):
   os.mkdir("Images")
   
 def getstacksearchresults(query):
-  resource = build("customsearch", "v1", developerKey=json_data["api_key"]).cse()
-  out = resource.list(q=query, cx=json_data['cse_key']).execute()
+  resource = build("customsearch", "v1", developerKey=os.environ["api_key"]).cse()
+  out = resource.list(q=query, cx=os.environ['cse_key']).execute()
   items = out['items']
   embed = Embed(title=f"Results for \"{query}\"")
   for i in range(4):
@@ -81,12 +80,11 @@ async def barplot(ctx, *args):
     df = pd.DataFrame(dt)
     ax = sns.barplot(x=df.columns.tolist(), y=df.iloc[0])
     ax.bar_label(ax.containers[0])
-    image_name = f"image{uuid.uuid1()}.png"
-    image_path = os.path.join("Images", image_name)
-    plt.savefig(image_path)
-    image_file = discord.File(image_path, filename="barplot.png")
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    image_file = discord.File(fp=buf, filename="barplot.png")
     await ctx.send(content=ctx.author.mention, file=image_file)
-    os.remove(image_file)
   except Exception as e:
     print(e)
     await ctx.send("ERROR: An exception occured.\nIs the data you entered valid?")
@@ -100,4 +98,4 @@ async def on_command_error(ctx, error):
 async def on_ready():
   await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='>help'))
 
-client.run(json_data["TOKEN"])
+client.run(os.environ["TOKEN"])
