@@ -4,6 +4,7 @@ from discord import Embed
 import random, os, json
 from discord.ext.commands import CommandNotFound
 from googleapiclient.discovery import build
+from numpy import diff
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -64,7 +65,9 @@ async def algorithm(ctx, difficulty="easy"):
   difficulty = difficulty.strip().lower()
 
   if not difficulty in difficulties:
-    await ctx.send(f"{ctx.author.mention} ERROR: Difficulty set to unknown value. The difficulties of the problems are: easy, medium, hard")
+    embed = Embed(title=":x: STATUS CODE: Error", description=f"The difficulty parameter got an invalid argument. \nSupported arguments: {difficulties}", color=discord.Color.red())
+    await ctx.send(content=ctx.author.mention, embed=embed)
+    
   else:
     title, link = get_problem(problems[difficulty])
     embed = Embed(title=title)
@@ -91,11 +94,11 @@ async def barplot(ctx, *args):
     plt.savefig(buf, format='png')
     buf.seek(0)
     image_file = discord.File(fp=buf, filename="barplot.png")
-    print(df)
-    await ctx.send(content=ctx.author.mention, file=image_file)
+    embed = Embed(title=":white_check_mark: STATUS CODE: Successful", color=discord.Color.green())
+    await ctx.send(content=ctx.author.mention, embed=embed, file=image_file)
   except Exception as e:
     print(e)
-    embed = Embed(title=":x: ERROR: An Exception Occured", description="Is the data you entered valid?", color=discord.Color.red())
+    embed = Embed(title=":x: STATUS CODE: Error", description="Is the data you entered valid?", color=discord.Color.red())
     await ctx.send(content=ctx.author.mention, embed=embed)
 
 @client.event
