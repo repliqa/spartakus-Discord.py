@@ -9,7 +9,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import uuid, io
 from dotenv import load_dotenv
-load_dotenv
+
+load_dotenv()
 
 sns.set_style("whitegrid")
 sns.set_palette("mako")
