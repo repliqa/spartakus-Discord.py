@@ -85,6 +85,7 @@ async def barplot(ctx, *args):
     plt.savefig(buf, format='png')
     buf.seek(0)
     image_file = discord.File(fp=buf, filename="barplot.png")
+    print(df)
     await ctx.send(content=ctx.author.mention, file=image_file)
   
 @client.event
