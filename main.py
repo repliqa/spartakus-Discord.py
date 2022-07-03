@@ -23,16 +23,19 @@ if not os.path.exists("Images"):
 def getstacksearchresults(query):
     resource = build("customsearch", "v1", developerKey=os.environ["api_key"]).cse()
     out = resource.list(q=query, cx=os.environ["cse_key"]).execute()
-    items = out["items"]
-    print(items)
-    embed = Embed(title=f'Results for "{query}"', color=discord.color.green())
-    for i in range(4):
-        try:
-            embed.add_field(name=items[i]["title"], value=items[i]["link"])
-            return embed
-        except Exception:
-            pass
-
+    if items in out.keys():
+        items = out["items"]
+        print(items)
+        embed = Embed(title=f'Results for "{query}"', color=discord.color.green())
+        for i in range(4):
+            try:
+                embed.add_field(name=items[i]["title"], value=items[i]["link"])
+                return embed
+            except Exception:
+                pass
+    else:
+        embed = Embed(title=f":warning: Status Code: WARNING", description="No results found")
+        return embed
 
 def get_problem(problems):
     randint = random.randint(0, len(problems))
